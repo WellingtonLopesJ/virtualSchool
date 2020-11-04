@@ -80,3 +80,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin.area']], func
 
 
 });
+
+Route::group(['middleware' => ['auth'], ], function(){
+
+    Route::resource('aulas', 'Site\teacher\LessonController');
+
+    Route::get('searchStudents', 'Site\teacher\StudentController@search');
+    Route::get('searchLocations', 'Site\teacher\LocationController@search');
+
+});

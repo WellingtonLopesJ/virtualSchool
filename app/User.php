@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Lesson;
 use App\Models\Permission;
 use App\Models\Post;
 use App\Models\Role;
@@ -18,15 +19,8 @@ use Illuminate\Support\Facades\Auth;
 class User extends Authenticatable
 {
 
-
-
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name', 'email', 'password', 'tenant_id'
     ];
@@ -40,6 +34,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
+
+    public function scheduledLessons()
+    {
+        return $this->lessons()->where('date', '>', date('Y-m-d H:i:s'))->where('canceled', 0);
+    }
 
     //Atribui role ao user
     public function addRole($roles)
