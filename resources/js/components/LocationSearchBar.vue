@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <input type="text" id="query" placeholder="Pesquisar" v-model="query" class="form-control" autocomplete="off">
+        <input type="text" name="location" id="query" placeholder="Pesquisar" v-model="query" class="form-control" autocomplete="off">
         <ul v-if="results.length > 0 && query" class="list-group">
             <li v-for="result in results.slice(0,10)" :key="result.id" class="list-group-item list-group-item-action">
                 <a v-on:click="setQuery(result.address)">

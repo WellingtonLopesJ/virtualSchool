@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Site\teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Lesson;
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 class LessonController extends Controller
@@ -37,7 +39,8 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        Lesson::createLesson($request->only(['location', 'selected', 'date']));
+
     }
 
     /**

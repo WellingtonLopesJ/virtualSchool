@@ -37703,6 +37703,7 @@ var render = function() {
       staticClass: "form-control",
       attrs: {
         type: "text",
+        name: "location",
         id: "query",
         placeholder: "Pesquisar",
         autocomplete: "off"
