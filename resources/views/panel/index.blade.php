@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <p>AdminController index</p>
+    <p>Master Dashboard</p>
 @stop
 
 @section('css')

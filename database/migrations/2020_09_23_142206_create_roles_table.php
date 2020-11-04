@@ -15,8 +15,24 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 50);
+            $table->string('label', 191);
             $table->timestamps();
         });
+
+        DB::table('roles')->insert(
+            array(
+                'name' => 'admin',
+                'label' => 'system administrator'
+            )
+        );
+
+        DB::table('roles')->insert(
+            array(
+                'name' => 'master',
+                'label' => 'tenant administrator'
+            )
+        );
     }
 
     /**

@@ -9,18 +9,23 @@
 
         @include('layouts.showResponse')
 
-        <form action="{{route('roles.store')}}" method="POST">
+        <form action="{{route('tenants.store')}}" method="POST">
 
             @csrf
-            <header><h3>Criar novo role</h3></header>
+            <header><h3>Criar novo tenant</h3></header>
             <div class="form-group">
                 <label for="name">Nome:</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Nome do role">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Nome do tenant" required>
             </div>
 
             <div class="form-group">
-                <label for="label">Label</label>
-                <input type="text" class="form-control" id="label" name="label" placeholder="Descrição do role">
+                <label for="subdomain">Subdomain:</label>
+                <input type="text" class="form-control" id="subdomain" name="subdomain" placeholder="subdomain do tenant" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="text" class="form-control" id="password" name="password" placeholder="senha do tenant" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Enviar</button>

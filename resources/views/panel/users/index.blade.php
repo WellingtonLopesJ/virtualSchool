@@ -5,6 +5,8 @@
 
 
 @section('content')
+
+
     <div class="container" >
         <h1 class="title">
             Users list
@@ -18,7 +20,8 @@
                 <th>Name</th>
                 <th>Tenant</th>
                 <th>Email</th>
-                <th width="150px">Ações</th>
+                <th>Ver</th>
+                <th>excluir</th>
             </tr>
 
             @forelse( $users as $user )
@@ -29,9 +32,10 @@
                     <td>{{$user->email}}</td>
                     <td>
                         <a href="{{route('users.show',$user->name)}}" class="permission btn btn-primary">
-                            <i class="fa fa-lock"></i>
+                            <i class="fas fa-info-circle"></i>
                         </a>
-
+                    </td>
+                    <td>
                         <form action="{{route('users.destroy', $user->name)}}" method="POST">
                             @csrf
                             @method('DELETE')

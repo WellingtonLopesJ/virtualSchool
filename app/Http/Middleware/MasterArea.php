@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Tenant\TenantManager;
 use Closure;
+use Illuminate\Support\Facades\Gate;
 
 class MasterArea
 {
@@ -15,6 +17,13 @@ class MasterArea
      */
     public function handle($request, Closure $next)
     {
+        $isMaster = app(TenantManager::class)->isMasterTenant();
+
+
+        if (Gate::denies('master_area')){
+            abort(403);
+        }
+
         return $next($request);
     }
 }

@@ -7,28 +7,28 @@
 @section('content')
     <div class="container">
         <h1 class="title">
-            Permissions de {{$role->name}}
+            roles de {{$permission->name}}
         </h1>
 
         <table class="table table-hover">
             @include('layouts.showResponse')
-            <a href="{{route('roles.add_permissions', $role->id)}}" class="btn btn-primary">Adicionar permission</a>
+
             <tr>
                 <th>Name</th>
                 <th>Label</th>
                 <th width="150px">Ações</th>
             </tr>
 
-            @forelse( $permissions as $permission )
+            @forelse( $roles as $role )
                 <tr>
-                    <td>{{$permission->name}}</td>
-                    <td>{{$permission->label}}</td>
+                    <td>{{$role->name}}</td>
+                    <td>{{$role->label}}</td>
                     <td>
                         <form action="{{route('roles.remove_permission')}}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <input type="hidden" name="roleId" value="{{$role->id}}">
-                            <input type="hidden" name="permissionId" value="{{$permission->id}}">
+                            <input type="hidden" name="roleId" value="{{$permission->id}}">
+                            <input type="hidden" name="permissionId" value="{{$role->id}}">
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                         </form>
                     </td>

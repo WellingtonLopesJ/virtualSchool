@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $posts = Post::all();
+
+        return view('site.posts.index', compact('posts'));
     }
 
     /**
@@ -80,6 +79,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::destroy($id);
+        return redirect()->back()->with('success','post deletado com sucesso');
     }
 }

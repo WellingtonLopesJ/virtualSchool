@@ -3,83 +3,71 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class TenantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $tenants = Tenant::all();
+        return view('admin.tenants.index', compact('tenants'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        //
+        return view('admin.tenants.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        //
+        //Cria tenant
+        $tenant = Tenant::create(['subdomain' => $request->subdomain, 'uuid' => Str::uuid(), 'name' => $request->name]);
+
+        //Criar master user para o novo  tenant
+        $userMaster = $tenant->users()->create([
+            'name' => $request->subdomain . "Master",
+            'email' => "{$request->subdomain}@master.com"
+            ,'password' => bcrypt($request->password)
+        ]);
+
+        //Atribui role de master ao novo user
+        $userMaster->addRole(2);
+
+        return redirect()->route('tenants.index')->with('success', 'Tenant criado com sucesso');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-        //
+        $tenant = Tenant::find($id);
+        $users = $tenant->users;
+
+        return view('admin.tenants.show', compact(['tenant','users']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-        //
+        Tenant::destroy($id);
+        return redirect()->back()->with('success', 'Tenant deletado com sucesso');
     }
 }

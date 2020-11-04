@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Gate;
+
 
 class AdminArea
 {
@@ -15,6 +17,11 @@ class AdminArea
      */
     public function handle($request, Closure $next)
     {
+
+        if (Gate::denies('admin_area')){
+            abort(403);
+        }
+
         return $next($request);
     }
 }

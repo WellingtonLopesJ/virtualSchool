@@ -7,29 +7,33 @@
 @section('content')
     <div class="container" >
         <h1 class="title">
-            Roles list
+            Tenants list
         </h1>
 
 
         <table class="table table-hover">
             @include('layouts.showResponse')
-            <a href="{{route('roles.create')}}" class="btn btn-primary">Criar Role</a>
+            <a href="{{route('tenants.create')}}" class="btn btn-primary">Criar tenant</a>
             <tr>
                 <th>Name</th>
-                <th>Label</th>
-                <th width="150px">Ações</th>
+                <th>subdomain</th>
+                <th width="150px">Usuários</th>
+                <th width="150px">Excluir</th>
             </tr>
 
-            @forelse( $roles as $role )
+            @forelse( $tenants as $tenant )
                 <tr>
-                    <td>{{$role->name}}</td>
-                    <td>{{$role->label}}</td>
+                    <td>{{$tenant->name}}</td>
+                    <td>{{$tenant->subdomain}}</td>
                     <td>
-                        <a href="{{route('roles.permissions', $role->id)}}" class="permission btn btn-primary">
-                            <i class="fa fa-lock"></i>
+                        <a href="{{route('tenants.show', $tenant->id)}}" class="permission btn btn-primary">
+                            <i class="fas fa-users"></i>
                         </a>
 
-                        <form action="{{route('roles.destroy', $role->id)}}" method="POST">
+
+                    </td>
+                    <td>
+                        <form action="{{route('tenants.destroy', $tenant->id)}}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>

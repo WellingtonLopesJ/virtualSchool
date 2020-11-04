@@ -16,7 +16,7 @@
             <header><h3>Adicionar role para {{$user->name}}</h3></header>
 
             <div class="form-group">
-                <label for="permissions">Roles</label>
+                <label for="">Roles</label>
 
                 <input type="hidden" name="user_name" value="{{$user->name}}">
 

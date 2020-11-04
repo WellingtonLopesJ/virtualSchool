@@ -26,7 +26,7 @@
                     <td>{{$user->name}}</td>
                     <td>{{$tenant->name}}</td>
                     <td>
-                        <form action="{{route('users.destroy', $user->id)}}" method="POST">
+                        <form action="{{route('users.destroy', $user->name)}}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
@@ -58,14 +58,14 @@
                     <td>{{$role->name}}</td>
                     <td>{{$role->label}}</td>
                     <td>
-                        <a href="{{route('roles.permissions', $role->id)}}" class="permission btn btn-primary">
+                        <a href="{{route('role.detail', $role->id)}}" class="permission btn btn-primary">
                             <i class="fa fa-lock"></i>
                         </a>
 
                         <form action="{{route('users.remove_role')}}" method="POST">
                             @csrf
                             <input type="hidden" name="role_id" value="{{$role->id}}">
-                            <input type="hidden" name="user_id" value="{{$user->id}}">
+                            <input type="hidden" name="user_name" value="{{$user->name}}">
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                         </form>
                     </td>
