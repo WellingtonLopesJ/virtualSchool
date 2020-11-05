@@ -31,7 +31,15 @@
                 <student-search-bar></student-search-bar>
             </div>
 
-
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Repetir</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" name="repeat">
+                    <option selected value="single">Aula única</option>
+                    <option value="weekly">Semanalmente</option>
+                </select>
+            </div>
 
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>

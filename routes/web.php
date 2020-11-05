@@ -87,5 +87,6 @@ Route::group(['middleware' => ['auth'], ], function(){
 
     Route::get('searchStudents', 'Site\teacher\StudentController@search');
     Route::get('searchLocations', 'Site\teacher\LocationController@search');
+    Route::get('fetchLessons', 'Site\teacher\LessonController@fetchLessons');
 
 });

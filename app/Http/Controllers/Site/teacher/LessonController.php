@@ -3,17 +3,21 @@
 namespace App\Http\Controllers\Site\teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Fixed_lesson;
 use App\Models\Lesson;
 use App\Models\Location;
 use Illuminate\Http\Request;
 
 class LessonController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function fetchLessons()
+    {
+        $lessons = auth()->user()->lessons()->orderBy('date', 'DESC')->limit(30)->get();
+
+        return $lessons->append(['title', 'start', 'end', 'url'])->toArray();
+    }
+
     public function index()
     {
         $lessons = auth()->user()->scheduledLessons;
@@ -21,68 +25,51 @@ class LessonController extends Controller
         return view('site.teacher.lessons.index', compact('lessons'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('site.teacher.lessons.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        Lesson::createLesson($request->only(['location', 'selected', 'date']));
 
+        if ($request->repeat === 'single'){
+            Lesson::createLesson($request->only(['location', 'selected', 'date']));
+        }
+
+        if ($request->repeat === "weekly"){
+            Fixed_lesson::createFixed_lesson($request->only(['location', 'selected', 'date']));
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+
+    public function show($slug)
     {
-        //
+        $lesson = Lesson::where('slug', $slug)->first();
+
+        if ($lesson->user_id !== auth()->user()->id){
+            return redirect()->back()->with('error', 'Não autorizado');
+        }
+
+        $students = $lesson->students;
+
+        return view('site.teacher.lessons.show', compact(['lesson', 'students']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //

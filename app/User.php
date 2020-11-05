@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Fixed_lesson;
 use App\Models\Lesson;
 use App\Models\Permission;
 use App\Models\Post;
@@ -38,12 +39,48 @@ class User extends Authenticatable
 
     public function lessons()
     {
+        $this->guarantee8weeksSchedule();
+
         return $this->hasMany(Lesson::class);
     }
 
     public function scheduledLessons()
     {
         return $this->lessons()->where('date', '>', date('Y-m-d H:i:s'))->where('canceled', 0);
+    }
+
+    public function fixed_lessons()
+    {
+        return $this->hasMany(Fixed_lesson::class);
+    }
+
+    //Garante que tem 8 aulas agendadas a partir de hoje
+    public function guarantee8weeksSchedule()
+    {
+        foreach ($this->fixed_lessons as $fixed_lesson){
+
+            if ($fixed_lesson->scheduledLessons()->count() < 8) {
+
+                //Pega a data da última aula agendada e adiciona 7 dias pra criar a próxima,
+                // se não tiver nenhuma agendada pega da última e cria por semana até o dia de hoje
+                $latest = $fixed_lesson->scheduledLessons()->orderBy('date', 'DESC')->first()->date ?? $fixed_lesson->lessons()->orderBy('date', 'DESC')->first()->date;
+                $date = date('Y-m-d H:i', strtotime('+7days',  strtotime($latest)));
+
+                $selected = array_of_column($fixed_lesson->students, 'id');
+
+                Lesson::createLesson([
+                    'user_id' => $fixed_lesson->user_id,
+                    'location_id' => $fixed_lesson->location_id,
+                    'date' => $date,
+                    'fixed_lesson_id' => $fixed_lesson->id,
+                    'selected' => $selected
+
+                ]);
+
+                $this->guarantee8weeksSchedule();
+            }
+
+        }
     }
 
     //Atribui role ao user

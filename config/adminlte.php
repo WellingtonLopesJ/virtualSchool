@@ -273,6 +273,11 @@ return [
 
             ],
         ],
+        [
+            'text'    => 'Aulas',
+            'icon'    => 'fas fa-user-shield',
+            'url'  => '/aulas'
+        ]
 
     ],
 

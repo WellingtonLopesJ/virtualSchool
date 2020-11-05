@@ -19,8 +19,9 @@ class CreateLessonsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('fixed_lesson_id')->nullable();
             $table->unsignedBigInteger('location_id')->nullable();
-            $table->date('date');
+            $table->dateTime('date');
             $table->boolean('canceled')->default(false);
+            $table->string('slug')->unique();
 
             $table->foreign('user_id')
                 ->references('id')

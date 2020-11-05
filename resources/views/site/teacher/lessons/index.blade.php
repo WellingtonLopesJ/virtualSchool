@@ -9,11 +9,14 @@
         <h1 class="title">
             Lessons list
         </h1>
+        @include('layouts.showResponse')
+        <a href="{{route('aulas.create')}}" class="btn btn-primary">Criar Lesson</a>
+
+        @include('layouts.calendar')
 
 
         <table class="table table-hover">
-            @include('layouts.showResponse')
-            <a href="{{route('aulas.create')}}" class="btn btn-primary">Criar Lesson</a>
+
             <tr>
                 <th>id</th>
                 <th>Location</th>
@@ -23,7 +26,7 @@
             @forelse( $lessons as $lesson )
                 <tr>
                     <td>{{$lesson->id}}</td>
-                    <td>{{$lesson->location ?? "nothing"}}</td>
+                    <td>{{$lesson->location->address ?? "nothing"}}</td>
                     <td>{{$lesson->date}}</td>
                 </tr>
             @empty

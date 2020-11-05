@@ -9,6 +9,7 @@ use Faker\Generator as Faker;
 $factory->define(Lesson::class, function (Faker $faker) {
     return [
         'user_id' => 1,
-        'date' => $faker->dateTimeBetween(date('Y-m-d H:i:s'), '+7 days')
+        'date' => $faker->dateTimeBetween(date('Y-m-d H:i:s'), '+7 days'),
+        'slug' => bin2hex(random_bytes(5))
     ];
 });
