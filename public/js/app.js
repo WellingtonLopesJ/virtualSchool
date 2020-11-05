@@ -2050,6 +2050,16 @@ __webpack_require__.r(__webpack_exports__);
       this.results = this.results.filter(function (result) {
         return result.id !== obj.id;
       });
+    },
+    unSelect: function unSelect(obj, event) {
+      event.preventDefault();
+      this.results.push(obj);
+      this.selectedIds = this.selectedIds.filter(function (id) {
+        return id !== obj.id;
+      });
+      this.selected = this.selectedIds.filter(function (selected) {
+        return selected.id !== obj.id;
+      });
     }
   },
   watch: {
@@ -37704,7 +37714,7 @@ var render = function() {
       attrs: {
         type: "text",
         name: "location",
-        id: "query",
+        id: "location",
         placeholder: "Pesquisar",
         autocomplete: "off"
       },
@@ -37799,7 +37809,7 @@ var render = function() {
               staticClass: "btn btn-success m-1",
               on: {
                 click: function($event) {
-                  return _vm.select(result, $event)
+                  return _vm.unSelect(result, $event)
                 }
               }
             },

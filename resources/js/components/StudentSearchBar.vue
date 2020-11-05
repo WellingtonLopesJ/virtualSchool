@@ -6,7 +6,7 @@
         </div>
 
         <div v-for="result in this.selected" :key="result.id">
-            <button class="btn btn-success m-1" v-on:click="select(result, $event)">{{result.name}}</button>
+            <button class="btn btn-success m-1" v-on:click="unSelect(result, $event)">{{result.name}}</button>
         </div>
 
         <input type="text" id="query" placeholder="Pesquisar" v-model="query" class="form-control" autocomplete="off">
@@ -44,6 +44,7 @@
             },
 
             select: function (obj, event) {
+
                 event.preventDefault();
 
                 this.selectedIds.push(obj.id)
@@ -52,6 +53,21 @@
                 this.results = this.results.filter((result) => {
                     return result.id !== obj.id
                 });
+            },
+
+            unSelect: function (obj, event) {
+                event.preventDefault();
+
+                this.results.push(obj)
+
+                this.selectedIds = this.selectedIds.filter((id) => {
+                    return id !== obj.id
+                })
+
+                this.selected = this.selectedIds.filter((selected) => {
+                    return selected.id !== obj.id;
+                })
+
             }
         },
 
