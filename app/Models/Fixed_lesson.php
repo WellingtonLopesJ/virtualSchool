@@ -28,7 +28,6 @@ class Fixed_lesson extends Model
         $request['fixed_lesson_id'] = $fixed_lesson->id;
         $lesson = Lesson::createLesson($request);
 
-
         //Create the other lessons
         auth()->user()->guarantee8weeksSchedule();
     }
@@ -49,6 +48,17 @@ class Fixed_lesson extends Model
         return Studentable::addStudents($this->id, 'App\Models\Fixed_lesson', $students_ids);
     }
 
+    public function updateStudents($students_ids, $lesson_id)
+    {
+        $currentRelations = Studentable::where([
+            ['studentable_type', 'App\Models\Fixed_lesson'],
+            ['studentable_id', $lesson_id]
+        ])->get();
+
+        Studentable::destroy(array_of_column($currentRelations, 'id'));
+        $this->addStudents($students_ids);
+    }
+
     public function students()
     {
         return $this->morphToMany(Student::class,'studentable');
@@ -57,6 +67,11 @@ class Fixed_lesson extends Model
     public function lessons()
     {
         return $this->hasMany(Lesson::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 
     public function scheduledLessons()

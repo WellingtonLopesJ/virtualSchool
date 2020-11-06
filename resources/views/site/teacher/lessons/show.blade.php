@@ -18,6 +18,10 @@
                 @else
                     <a href="{{route('aulas.uncancel', $lesson->slug)}}" class="btn btn-success text-white">Reestabelecer aula</a>
                 @endif
+                @if(isset($lesson->fixed_lesson_id))
+                |
+                <a href="{{route('fixedLessons.show', $lesson->fixed_lesson->slug)}}" class="btn btn-primary">Editar todas</a>
+                @endif
             </h3>
         </header>
 

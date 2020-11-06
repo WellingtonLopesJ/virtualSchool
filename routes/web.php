@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth'], ], function(){
     Route::get('aulas/{slug}/cancel', 'Site\teacher\LessonController@cancel')->name('aulas.cancel');
     Route::get('aulas/{slug}/uncancel', 'Site\teacher\LessonController@unCancel')->name('aulas.uncancel');
 
+    Route::resource('fixedLessons', 'Site\Teacher\Fixed_lessonController');
 
     Route::get('searchStudents', 'Site\teacher\StudentController@search');
     Route::get('searchCurrentStudents/{slug}', 'Site\teacher\StudentController@searchCurrentStudents')->name('search.current.students');

@@ -15,7 +15,7 @@ class LessonController extends Controller
     {
         $lessons = auth()->user()->lessons()->orderBy('date', 'DESC')->limit(30)->get();
 
-        return $lessons->append(['title', 'start', 'end', 'url', 'eventBackgroundColor'])->toArray();
+        return $lessons->append(['title', 'start', 'end', 'url', 'color'])->toArray();
     }
 
     public function index()
@@ -52,14 +52,11 @@ class LessonController extends Controller
         $lesson = Lesson::where('slug', $slug)->first();
 
         if ($lesson->user_id !== auth()->user()->id){
-            return redirect()->back()->with('error', 'Não autorizado');
+            abort(403);
         }
 
-        $students = $lesson->students;
-        $studentsUrl = route('search.current.students', $slug);
 
-
-        return view('site.teacher.lessons.show', compact(['lesson', 'students', 'studentsUrl']));
+        return view('site.teacher.lessons.show', compact(['lesson']));
     }
 
 
@@ -87,7 +84,7 @@ class LessonController extends Controller
         $lesson->updateStudents($request->selected ?? [], $lesson->id);
 
         if ($lesson->save())
-        return redirect()->route('aulas.index')->with('success', 'Aula atualizada com sucesso');
+        return redirect()->route('aulas.show', $slug)->with('success', 'Aula atualizada com sucesso');
     }
 
     public function cancel($slug)

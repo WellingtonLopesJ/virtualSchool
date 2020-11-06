@@ -37775,26 +37775,21 @@ var render = function() {
               "li",
               {
                 key: result.id,
-                staticClass: "list-group-item list-group-item-action"
+                staticClass: "list-group-item list-group-item-action",
+                on: {
+                  click: function($event) {
+                    return _vm.setQuery(result.address)
+                  }
+                }
               },
               [
-                _c(
-                  "a",
-                  {
-                    on: {
-                      click: function($event) {
-                        return _vm.setQuery(result.address)
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(result.address) +
-                        "\n            "
-                    )
-                  ]
-                )
+                _c("a", [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(result.address) +
+                      "\n            "
+                  )
+                ])
               ]
             )
           }),

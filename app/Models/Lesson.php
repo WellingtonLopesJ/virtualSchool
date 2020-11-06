@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lesson extends Model
 {
     protected $fillable = ['user_id', 'fixed_lesson_id', 'location_id', 'date', 'canceled', 'slug'];
-    protected $visible = ['title', 'start', 'end', 'url', 'eventBackgroundColor'];
+    protected $visible = ['title', 'start', 'end', 'url', 'color'];
 
 
 
@@ -72,6 +72,11 @@ class Lesson extends Model
         return $this->belongsTo(Location::class);
     }
 
+    public function fixed_lesson()
+    {
+        return $this->belongsTo(Fixed_lesson::class);
+    }
+
     public function getTitleAttribute()
     {
         return $this->students()->first()->name ?? $this->location->address ?? null;
@@ -94,19 +99,17 @@ class Lesson extends Model
         return route('aulas.show', $this->slug);
     }
 
-    public function getEventBackgroundColorAttribute()
+    public function getColorAttribute()
     {
-        $color = "#007bff";
-
-        if ($this->canceled == true){
-            $color = "#a9a9a9";
-        }
+        $color = "#3788d8";
 
         $now = date('Y-m-d H:i:s');
         $date = date('Y-m-d H:i:s', strtotime($this->date));
-        if ($date < $now){
-            $color = "#a9a9a9";
+
+        if ($this->canceled == true || $date < $now){
+            $color = "gray";
         }
+
 
         return $color;
     }
