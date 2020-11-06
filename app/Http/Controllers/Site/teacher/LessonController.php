@@ -15,7 +15,7 @@ class LessonController extends Controller
     {
         $lessons = auth()->user()->lessons()->orderBy('date', 'DESC')->limit(30)->get();
 
-        return $lessons->append(['title', 'start', 'end', 'url'])->toArray();
+        return $lessons->append(['title', 'start', 'end', 'url', 'eventBackgroundColor'])->toArray();
     }
 
     public function index()
@@ -71,7 +71,7 @@ class LessonController extends Controller
     public function update(Request $request, $slug)
     {
         $request->validate([
-            'location' => 'required|string|min:3|max:40',
+            'location' => 'required|string|min:3|max:100',
             'date' => 'required|string|max:21',
         ]);
 
@@ -90,9 +90,52 @@ class LessonController extends Controller
         return redirect()->route('aulas.index')->with('success', 'Aula atualizada com sucesso');
     }
 
+    public function cancel($slug)
+    {
+        $lesson = Lesson::where('slug', $slug)->first();
+
+        if ($lesson->user_id !== auth()->user()->id){
+            return redirect()->back()->with('error', 'Não autorizado');
+        }
+
+        if ($lesson->canceled){
+            return redirect()->back()->with('error', 'Aula já estava cancelada');
+        }
+
+        $lesson->canceled = 1;
+        $lesson->save();
+
+        return redirect()->route('aulas.show', $slug)->with('success', 'Aula cancelada com sucesso');
+
+    }
+
+    public function unCancel($slug)
+    {
+        $lesson = Lesson::where('slug', $slug)->first();
+
+        if ($lesson->user_id !== auth()->user()->id){
+            return redirect()->back()->with('error', 'Não autorizado');
+        }
+
+        if (!$lesson->canceled){
+            return redirect()->back()->with('error', 'Aula não estava cancelada');
+        }
+
+        $now = date('Y-m-d H:i:s');
+        $date = date('Y-m-d H:i:s', strtotime($lesson->date));
+        if ($date < $now){
+            return redirect()->back()->with('error', 'Impossivel reestabelecer esta aula, data expirada');
+        }
+
+        $lesson->canceled = 0;
+        $lesson->save();
+
+        return redirect()->route('aulas.show', $slug)->with('success', 'Aula reestabelecida com sucesso');
+
+    }
 
     public function destroy($id)
     {
-        //
+        return "aa";
     }
 }

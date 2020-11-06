@@ -11,10 +11,23 @@
 
         @include('layouts.showResponse')
 
+
+        <header><h3>Editar aula |
+                @if($lesson->canceled == false)
+                    <a href="{{route('aulas.cancel', $lesson->slug)}}" class="btn btn-danger text-white">Cancelar aula</a>
+                @else
+                    <a href="{{route('aulas.uncancel', $lesson->slug)}}" class="btn btn-success text-white">Reestabelecer aula</a>
+                @endif
+            </h3>
+        </header>
+
         <form action="{{route('aulas.update', $lesson->slug)}}" method="POST">
+
+            @if($lesson->canceled == true)<fieldset disabled="disabled">@endif
+
             @method('PUT')
             @csrf
-            <header><h3>Editar aula</h3></header>
+
 
             <div class="form-group">
                 <label for="name">Local:</label>

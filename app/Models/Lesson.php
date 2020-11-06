@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lesson extends Model
 {
     protected $fillable = ['user_id', 'fixed_lesson_id', 'location_id', 'date', 'canceled', 'slug'];
-    protected $visible = ['title', 'start', 'end', 'url'];
+    protected $visible = ['title', 'start', 'end', 'url', 'eventBackgroundColor'];
 
 
 
@@ -94,9 +94,27 @@ class Lesson extends Model
         return route('aulas.show', $this->slug);
     }
 
+    public function getEventBackgroundColorAttribute()
+    {
+        $color = "#007bff";
+
+        if ($this->canceled == true){
+            $color = "#a9a9a9";
+        }
+
+        $now = date('Y-m-d H:i:s');
+        $date = date('Y-m-d H:i:s', strtotime($this->date));
+        if ($date < $now){
+            $color = "#a9a9a9";
+        }
+
+        return $color;
+    }
+
     public function getFormatedDateAttribute()
     {
         return date('d/m/Y H:i', strtotime($this->date));
     }
+
 
 }
