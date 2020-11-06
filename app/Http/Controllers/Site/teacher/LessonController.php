@@ -42,6 +42,8 @@ class LessonController extends Controller
         if ($request->repeat === "weekly"){
             Fixed_lesson::createFixed_lesson($request->only(['location', 'selected', 'date']));
         }
+
+        return redirect()->route('aulas.index')->with('success','Aula criada com sucesso');
     }
 
 
@@ -54,8 +56,10 @@ class LessonController extends Controller
         }
 
         $students = $lesson->students;
+        $studentsUrl = route('search.current.students', $slug);
 
-        return view('site.teacher.lessons.show', compact(['lesson', 'students']));
+
+        return view('site.teacher.lessons.show', compact(['lesson', 'students', 'studentsUrl']));
     }
 
 
@@ -64,9 +68,26 @@ class LessonController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        //
+        $request->validate([
+            'location' => 'required|string|min:3|max:40',
+            'date' => 'required|string|max:21',
+        ]);
+
+        $lesson = Lesson::where('slug', $slug)->first();
+
+        if ($lesson->user_id !== auth()->user()->id) {
+            return new \Exception(403);
+        }
+
+        $lesson->location_id = Location::getId($request->location);
+        $lesson->date = date('Y-m-d H:i:s', strtotime($request->date));
+
+        $lesson->updateStudents($request->selected ?? [], $lesson->id);
+
+        if ($lesson->save())
+        return redirect()->route('aulas.index')->with('success', 'Aula atualizada com sucesso');
     }
 
 

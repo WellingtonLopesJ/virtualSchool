@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Fixed_lesson extends Model
 {
-    protected $fillable = ['user_id', 'location_id', 'start_date', 'time', 'end_date'];
+    protected $fillable = ['user_id', 'location_id', 'start_date', 'time', 'end_date', 'slug'];
 
     public static function createFixed_lesson($request)
     {
@@ -16,6 +16,7 @@ class Fixed_lesson extends Model
         $data['location_id'] = Location::getId($request['location']);
         $data['start_date'] = date('Y-m-d',strtotime($request['date']));
         $data['time'] = date('H:i', strtotime($request['date']));
+        $data['slug'] = Fixed_lesson::slug();
 
         $fixed_lesson = Fixed_lesson::create($data);
 
@@ -30,6 +31,17 @@ class Fixed_lesson extends Model
 
         //Create the other lessons
         auth()->user()->guarantee8weeksSchedule();
+    }
+
+    public static function slug()
+    {
+        $slug = bin2hex(random_bytes(5));
+
+        if (Fixed_lesson::where('slug', $slug)->exists()){
+            return Fixed_lesson::slug();
+        }
+
+        return $slug;
     }
 
     public function addStudents($students_ids)

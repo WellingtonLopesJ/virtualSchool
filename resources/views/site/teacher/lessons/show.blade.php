@@ -5,35 +5,35 @@
 
 
 @section('content')
-    <div class="container">
-        <h1 class="title">
-            Aula - {{$lesson->FormatedDate}}
-        </h1>
+    <script src="{{ asset('js/app.js') }}" defer></script>
 
-        <table class="table table-hover">
-            <thead><h3>Alunos:</h3></thead>
-            @include('layouts.showResponse')
+    <div class="container" id="app">
 
-            <tr>
-                <th>Name</th>
-                <th>Data de nascimento</th>
-                <th width="150px">Aulas</th>
-            </tr>
+        @include('layouts.showResponse')
 
-            @forelse( $students as $student )
-                <tr>
-                    <td>{{$student->name}}</td>
-                    <td>{{$student->formatedBirthday}}</td>
-                    <td><i class="fa fa-lock"></i></td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="90">
-                        <p>Nenhum Resultado!</p>
-                    </td>
-                </tr>
-            @endforelse
-        </table>
+        <form action="{{route('aulas.update', $lesson->slug)}}" method="POST">
+            @method('PUT')
+            @csrf
+            <header><h3>Editar aula</h3></header>
+
+            <div class="form-group">
+                <label for="name">Local:</label>
+                <location-search-bar></location-search-bar>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Data:</label>
+                <input type="datetime-local" class="form-control" id="date" name="date" value="{{$lesson->start}}">
+            </div>
+
+            <div class="form-group">
+                <label for="students">Alunos:</label>
+                <student-search-bar></student-search-bar>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
 
     </div>
 @stop

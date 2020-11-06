@@ -1954,7 +1954,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "LocationSearchBar",
   data: function data() {
@@ -1979,11 +1978,28 @@ __webpack_require__.r(__webpack_exports__);
     },
     setQuery: function setQuery(val) {
       this.query = val;
+    },
+    fetchCurrentLocation: function fetchCurrentLocation(slug) {
+      var _this2 = this;
+
+      axios.get('http://master.myapp.com/searchCurrentLocation/' + slug).then(function (response) {
+        _this2.query = response.data;
+      })["catch"](function (response) {
+        console.log(response);
+      });
     }
   },
   watch: {
     query: function query(before, after) {
       this.fetchResults(this.query);
+    }
+  },
+  mounted: function mounted() {
+    var currentUrl = window.location.pathname;
+
+    if (!currentUrl.includes('create')) {
+      var lastTen = currentUrl.substr(currentUrl.length - 10);
+      setTimeout(this.fetchCurrentLocation(lastTen), 11000);
     }
   }
 });
@@ -2057,14 +2073,35 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedIds = this.selectedIds.filter(function (id) {
         return id !== obj.id;
       });
-      this.selected = this.selectedIds.filter(function (selected) {
+      this.selected = this.selected.filter(function (selected) {
         return selected.id !== obj.id;
+      });
+    },
+    fetchCurrentStudents: function fetchCurrentStudents(slug) {
+      var _this2 = this;
+
+      axios.get('http://master.myapp.com/searchCurrentStudents/' + slug).then(function (response) {
+        _this2.selected = response.data;
+
+        _this2.selected.forEach(function (item) {
+          _this2.selectedIds.push(item.id);
+        });
+      })["catch"](function (response) {
+        console.log(response);
       });
     }
   },
   watch: {
     query: function query(before, after) {
       this.fetchResults(this.query);
+    }
+  },
+  mounted: function mounted() {
+    var currentUrl = window.location.pathname;
+
+    if (!currentUrl.includes('create')) {
+      var lastTen = currentUrl.substr(currentUrl.length - 10);
+      setTimeout(this.fetchCurrentStudents(lastTen), 11000);
     }
   }
 });

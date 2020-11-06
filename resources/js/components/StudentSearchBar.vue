@@ -20,7 +20,6 @@
 <script>
     export default {
         name: "StudentSearchBar",
-
         data: function () {
             return {
                 query: "",
@@ -29,11 +28,8 @@
                 selectedIds: []
             }
         },
-
         methods: {
-
             fetchResults: function (query) {
-
                 axios.get('/searchStudents', {params: {query: query, selectedIds: this.selectedIds }})
                     .then( response => {
                         this.results = response.data;
@@ -42,46 +38,53 @@
                         console.log(response)
                     })
             },
-
             select: function (obj, event) {
-
                 event.preventDefault();
-
                 this.selectedIds.push(obj.id)
                 this.selected.push(obj)
-
                 this.results = this.results.filter((result) => {
                     return result.id !== obj.id
                 });
             },
-
             unSelect: function (obj, event) {
                 event.preventDefault();
-
                 this.results.push(obj)
-
                 this.selectedIds = this.selectedIds.filter((id) => {
                     return id !== obj.id
                 })
-
-                this.selected = this.selectedIds.filter((selected) => {
+                this.selected = this.selected.filter((selected) => {
                     return selected.id !== obj.id;
                 })
+            },
+            fetchCurrentStudents: function (slug){
+                axios.get('http://master.myapp.com/searchCurrentStudents/' + slug)
+                    .then( response => {
+                        this.selected = response.data;
 
-            }
+                        this.selected.forEach((item) => {
+                            this.selectedIds.push(item.id)
+                        })
+
+                    })
+                    .catch((response)=> {
+                        console.log(response)
+                    })
+            },
         },
-
         watch:{
-
             query: function (before, after) {
                 this.fetchResults(this.query)
             }
-
+        },
+        mounted() {
+            var currentUrl = window.location.pathname;
+            if (!currentUrl.includes('create')) {
+                var lastTen = currentUrl.substr(currentUrl.length - 10);
+                setTimeout(this.fetchCurrentStudents(lastTen), 11000)
+            }
         }
-
     }
 </script>
 
 <style scoped>
-
 </style>

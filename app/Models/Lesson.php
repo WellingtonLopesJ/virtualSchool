@@ -10,9 +10,9 @@ class Lesson extends Model
     protected $visible = ['title', 'start', 'end', 'url'];
 
 
+
     public static function createLesson($request)
     {
-
         $data = [];
 
         if (isset($request['fixed_lesson_id'])){
@@ -51,6 +51,17 @@ class Lesson extends Model
         return Studentable::addStudents($this->id, 'App\Models\Lesson', $students_ids);
     }
 
+    public function updateStudents($students_ids, $lesson_id)
+    {
+        $currentRelations = Studentable::where([
+            ['studentable_type', 'App\Models\Lesson'],
+            ['studentable_id', $lesson_id]
+        ])->get();
+
+        Studentable::destroy(array_of_column($currentRelations, 'id'));
+        $this->addStudents($students_ids);
+    }
+
     public function students()
     {
         return $this->morphToMany(Student::class,'studentable');
@@ -87,4 +98,5 @@ class Lesson extends Model
     {
         return date('d/m/Y H:i', strtotime($this->date));
     }
+
 }

@@ -20,6 +20,7 @@ class CreateFixedLessonsTable extends Migration
             $table->date('start_date');
             $table->time('time');
             $table->date('end_date')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
 
             $table->foreign('user_id')

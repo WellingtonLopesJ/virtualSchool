@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Site\teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Fixed_lesson;
+use App\Models\Lesson;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,13 +20,23 @@ class StudentController extends Controller
 
         $results = Student::where('name', 'like', '%' . $query . '%')
             ->limit(5)
-            ->get()
-            ->whereNotIn('id', $selectedIds);
+            ->whereNotIn('id', $selectedIds)
+            ->get();
+
 
         if(empty(trim($query)))
             $results = [];
 
-        return response()->json($results);
+        return $results;
+    }
+
+    public function searchCurrentStudents($slug)
+    {
+        $lesson = Lesson::where('slug', $slug)->first() ?? Fixed_lesson::where('slug', $slug)->first();
+
+        $students = $lesson->students()->get()->toArray();
+
+        return $students;
     }
 
     public function index()

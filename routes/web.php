@@ -86,7 +86,9 @@ Route::group(['middleware' => ['auth'], ], function(){
     Route::resource('aulas', 'Site\teacher\LessonController');
 
     Route::get('searchStudents', 'Site\teacher\StudentController@search');
+    Route::get('searchCurrentStudents/{slug}', 'Site\teacher\StudentController@searchCurrentStudents')->name('search.current.students');
     Route::get('searchLocations', 'Site\teacher\LocationController@search');
+    Route::get('searchCurrentLocation/{slug}', 'Site\teacher\LocationController@searchCurrentLocation')->name('search.current.location');
     Route::get('fetchLessons', 'Site\teacher\LessonController@fetchLessons');
 
 });
