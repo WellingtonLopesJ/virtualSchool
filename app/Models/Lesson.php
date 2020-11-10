@@ -3,13 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Lesson extends Model
 {
     protected $fillable = ['user_id', 'fixed_lesson_id', 'location_id', 'date', 'canceled', 'slug'];
     protected $visible = ['title', 'start', 'end', 'url', 'color'];
 
+    public function subtractFromBalance()
+    {
+        $students = $this->students;
 
+        foreach ($students as $student){
+
+           $student->balance()->firstOrCreate([], ['amount' => 0])->withdraw(1, $this->id);
+
+        }
+
+    }
 
     public static function createLesson($request)
     {
@@ -75,6 +86,11 @@ class Lesson extends Model
     public function fixed_lesson()
     {
         return $this->belongsTo(Fixed_lesson::class);
+    }
+
+    public function historics()
+    {
+        return $this->hasMany(Historic::class);
     }
 
     public function getTitleAttribute()

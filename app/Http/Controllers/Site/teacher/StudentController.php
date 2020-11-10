@@ -84,6 +84,7 @@ class StudentController extends Controller
     public function show($slug)
     {
         $student = auth()->user()->students()->where('slug', $slug)->first();
+        $student->computeCurrentBalance();
         $lessons = $student->scheduledLessons;
 
         return view('site.teacher.students.show', compact(['student', 'lessons']));

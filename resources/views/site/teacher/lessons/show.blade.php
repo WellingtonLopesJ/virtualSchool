@@ -27,7 +27,7 @@
 
         <form action="{{route('aulas.update', $lesson->slug)}}" method="POST">
 
-            @if($lesson->canceled == true)<fieldset disabled="disabled">@endif
+            @if($lesson->canceled == true || $lesson->date < date('Y-m-d H:i:s'))<fieldset disabled="disabled">@endif
 
             @method('PUT')
             @csrf

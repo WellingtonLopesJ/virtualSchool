@@ -36,8 +36,6 @@
                         <form action="{{--{{route('tenants.remove_user')}}--}}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <input type="hidden" name="tenantId" value="{{$tenant->id}}">
-                            <input type="hidden" name="userId" value="{{$lesson->id}}">
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                         </form>
                     </td>

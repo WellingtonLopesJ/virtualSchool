@@ -41,4 +41,36 @@ class Balance extends Model
         }
     }
 
+    public function withdraw($value, $lesson_id)
+    {
+        DB::beginTransaction();
+
+        $student = $this->student;
+        $totalBefore = $this->amount;
+
+        $this->amount -= $value;
+        $withdrawal = $this->save();
+
+        $historic = $student->historics()->create([
+            'student_id' => $student->id,
+            'type' => 'O',
+            'amount' => $value,
+            'total_before' => $totalBefore,
+            'total_after' => $this->amount,
+            'date' => date('Ymd'),
+            'lesson_id' => $lesson_id
+        ]);
+
+        if ($withdrawal && $historic){
+            DB::commit();
+
+        }else{
+            DB::rollBack();
+        }
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }

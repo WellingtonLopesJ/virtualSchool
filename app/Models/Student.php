@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class Student extends Model
 {
     protected $visible = ['name', 'id', 'date_of_birth'];
     protected $fillable = ['name', 'date_of_birth'];
+
 
     public function balance()
     {
@@ -39,6 +41,23 @@ class Student extends Model
     public function scheduledLessons()
     {
         return $this->lessons()->where('date', '>', date('Y-m-d H:i:s'))->where('canceled', 0);
+    }
+
+    public function computeCurrentBalance()
+    {
+       $lessons = $this->lessons()
+            ->where('date', '<', date('Y-m-d H:i:s'))
+            ->where('canceled', 0)
+           ->doesntHave('historics')
+           ->get();
+
+
+      foreach ($lessons as $lesson){
+
+            $lesson->subtractFromBalance();
+
+        }
+
     }
 
     public function addLocation($location_id)
