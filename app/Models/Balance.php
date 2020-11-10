@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Balance extends Model
 {
@@ -12,9 +13,11 @@ class Balance extends Model
 
     protected $fillable = ['student_id', 'amount'];
 
-    public function deposit($value, Student $student) : array
+    public function deposit($value, Student $student, $lesson_id = null) : array
     {
         DB::beginTransaction();
+
+        Log::info('1:' . $lesson_id);
 
         $totalBefore = $this->amount;
 
@@ -27,7 +30,8 @@ class Balance extends Model
             'amount' => $value,
             'total_before' => $totalBefore,
             'total_after' => $this->amount,
-            'date' => date('Ymd')
+            'date' => date('Ymd'),
+            'lesson_id' => $lesson_id
         ]);
 
         if ($deposit && $historic){

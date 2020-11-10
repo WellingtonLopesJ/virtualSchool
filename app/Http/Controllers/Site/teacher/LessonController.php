@@ -35,6 +35,11 @@ class LessonController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate([
+            'location' => 'string|required|min:5',
+            'date' => 'required|date'
+        ]);
+
         if ($request->repeat === 'single'){
             Lesson::createLesson($request->only(['location', 'selected', 'date']));
         }
@@ -101,6 +106,8 @@ class LessonController extends Controller
 
         $lesson->canceled = 1;
         $lesson->save();
+
+        $lesson->refundCancelled();
 
         return redirect()->route('aulas.show', $slug)->with('success', 'Aula cancelada com sucesso');
 

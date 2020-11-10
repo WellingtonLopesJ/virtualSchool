@@ -22,6 +22,21 @@ class Lesson extends Model
 
     }
 
+    public function refundCancelled()
+    {
+        $historics = $this->historics()->where('type','O')->get();
+
+        if ($historics->count() > 0){
+
+            foreach ($historics as $historic){
+                $student = $historic->student;
+
+                $student->balance->deposit($historic->amount, $student, $this->id);
+            }
+
+        }
+    }
+
     public static function createLesson($request)
     {
         $data = [];
