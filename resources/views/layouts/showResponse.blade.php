@@ -12,13 +12,15 @@
 @endif
 
 @if(session('success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success my-3">
         {{session()->get('success')}}
     </div>
 @endif
 
 @if(session('error'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger my-3">
         {{session()->get('error')}}
     </div>
 @endif
+
+

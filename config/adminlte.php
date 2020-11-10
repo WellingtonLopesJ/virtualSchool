@@ -274,9 +274,20 @@ return [
             ],
         ],
         [
-            'text'    => 'Aulas',
+            'text'    => 'Professor',
             'icon'    => 'fas fa-user-shield',
-            'url'  => '/aulas'
+            'submenu' => [
+                [
+                    'text' => 'Aulas',
+                    'url'  => '/aulas',
+                ],
+                [
+                    'text' => 'Alunos',
+                    'url'  => '/alunos',
+
+                ],
+
+            ],
         ]
 
     ],

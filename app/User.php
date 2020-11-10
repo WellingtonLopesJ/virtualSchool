@@ -8,6 +8,7 @@ use App\Models\Permission;
 use App\Models\Post;
 use App\Models\Role;
 use App\Models\Role_user;
+use App\Models\Student;
 use App\Models\Tenant;
 use App\Tenant\Scopes\TenantScope;
 use App\Tenant\TenantManager;
@@ -16,6 +17,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -36,6 +38,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
 
     public function lessons()
     {
