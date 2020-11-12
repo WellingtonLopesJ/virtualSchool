@@ -89,6 +89,23 @@ class Student extends Model
         return date('d/m/Y', strtotime($this->date_of_birth));
     }
 
+    public function getTableClassAttribute()
+    {
+       $credits = $this->credits;
+
+       if ($credits < 0){
+           return "table-danger";
+       }
+
+       if ($credits == 0 || $credits == 1){
+           return "table-warning";
+       }
+
+       if ($credits > 1){
+           return  "table-default";
+       }
+    }
+
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = $value;

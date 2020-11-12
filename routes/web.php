@@ -105,4 +105,6 @@ Route::group(['middleware' => ['auth'], ], function(){
 
     });
 
+    Route::get('relatorios', 'Site\teacher\ReportController@index');
+
 });

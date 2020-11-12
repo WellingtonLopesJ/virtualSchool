@@ -1,0 +1,30 @@
+.section{
+    padding: 30px;
+}
+
+.flex, .row{
+    display: flex;
+}
+
+.row{
+    padding-top: 10px;
+    justify-content: center;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.col{
+    padding: 10px;
+    flex: 1;
+}
+
+.box{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 30px;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    background-color: #5a6268;
+}

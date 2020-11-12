@@ -29,12 +29,26 @@ class Fixed_lessonController extends Controller
         $request->validate([
             'location' => 'required|string|min:3|max:100',
             'date' => 'required|string|max:21',
+            'end_date' => 'date'
         ]);
 
         $fixed_lesson = Fixed_lesson::where('slug', $slug)->first();
 
         if ($fixed_lesson->user_id !== auth()->user()->id) {
-            return new \Exception(403);
+            abort(403);
+        }
+
+        //End_date logic
+        if (compare_dates($request->end_date && $request->has_end == "on" && $request->end_date)){
+            //Guarantee end_date is in the future
+            return redirect()->back()->with('error', 'Data final inválida');
+        }
+
+        if ($request->has_end == "on" && $request->end_date){
+            $fixed_lesson->end_date = date('Y-m-d', strtotime($request->end_date));
+        }
+        if ($request->has_end == "off"){
+            $fixed_lesson->end_date = null;
         }
 
         $fixed_lesson->location_id = Location::getId($request->location);
@@ -55,7 +69,7 @@ class Fixed_lessonController extends Controller
         //Create the other lessons
         auth()->user()->guarantee8weeksSchedule();
 
-        return redirect()->route('fixedLessons.show', $slug)->with('success', 'Aula atualizada com sucesso');
+        return redirect()->route('fixedLessons.show', $slug)->with('success', 'Aulas atualizadas com sucesso');
     }
 
 

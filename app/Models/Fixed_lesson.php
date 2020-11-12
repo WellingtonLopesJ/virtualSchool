@@ -18,6 +18,10 @@ class Fixed_lesson extends Model
         $data['time'] = date('H:i', strtotime($request['date']));
         $data['slug'] = Fixed_lesson::slug();
 
+        if ($request['end_date']){
+            $data['end_date'] = date('Y-m-d', strtotime($request['end_date']));
+        }
+
         $fixed_lesson = Fixed_lesson::create($data);
 
         //Add students to fixed_lesson

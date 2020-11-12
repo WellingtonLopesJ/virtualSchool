@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(UserSeeder::class);
 
         factory(\App\Models\Student::class, 10)->create();
-        factory(\App\Models\Lesson::class, 10)->create();
         factory(\App\Models\Location::class, 10)->create();
     }
 }

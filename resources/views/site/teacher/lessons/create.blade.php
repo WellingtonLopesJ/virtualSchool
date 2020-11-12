@@ -39,7 +39,20 @@
                     <option selected value="single">Aula única</option>
                     <option value="weekly">Semanalmente</option>
                 </select>
+
             </div>
+
+
+                <div id="has_endGroup" hidden="hidden" class="form-check">
+                    <input type="checkbox" name="has_end" id="has_end" class="form-check-input">
+                    <label for="has_end" class="form-check-label">Definir data final</label>
+                </div>
+
+                <div class="form-group" id="end_dateGroup" hidden="hidden">
+                    <label for="end_date">Parar de agendar em:</label>
+                    <input name="end_date" id="end_date" type="date" class="form-control"/>
+                </div>
+
 
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
@@ -53,4 +66,32 @@
 
 @section('js')
     <script> console.log('Hi!'); </script>
+    <script>
+        $(document).ready(function(){
+
+            $("#has_end").change(function () {
+                var selected_option = $('#has_end').val();
+                if (selected_option === "on") {
+                    $("#end_dateGroup").removeAttr('hidden').show();
+                    $('#has_end').val("off");
+                }
+                if (selected_option === "off") {
+                    $('#end_dateGroup').attr('hidden','hidden').show();
+                    $('#has_end').val("on");
+                }
+            })
+
+            $("#inputGroupSelect01").change(function () {
+                var selected_option = $('#inputGroupSelect01').val();
+
+                if (selected_option !== 'weekly') {
+                    $('#has_endGroup').attr('hidden','hidden').show();
+                }
+                if (selected_option === 'weekly') {
+                    $("#has_endGroup").removeAttr('hidden').show();
+                }
+            })
+
+        })
+    </script>
 @stop

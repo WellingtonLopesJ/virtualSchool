@@ -1,0 +1,41 @@
+body{
+    font-family: 'Open Sans', sans-serif;
+}
+
+.top-section{
+    color: white;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header{
+    background-image: linear-gradient(to right, #a25b5b, #692e4c);
+    padding: 2.5em;
+}
+
+a{
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+}
+
+h1{
+    margin: 0;
+}
+
+nav{
+    display: flex;
+    justify-content: center;
+    padding-top: 2em;
+}
+
+nav a{
+    margin: auto 1.5em;
+    color: rgba(255, 255,255, 0.5);
+}

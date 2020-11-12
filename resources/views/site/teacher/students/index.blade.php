@@ -18,25 +18,21 @@
                 <th>Nome</th>
                 <th>Data de nascimento</th>
                 <th width="150px">Ver</th>
-                <th width="150px">Excluir</th>
+                <th width="150px">Saldo</th>
             </tr>
 
             @forelse( $students as $student )
-                <tr>
+                <tr class="{{$student->tableClass}}">
                     <td>{{$student->name}}</td>
                     <td>{{$student->FormatedBirthday}}</td>
                     <td>
                         <a href="{{route('alunos.show', $student->slug)}}" class="permission btn btn-primary">
-                            <i class="fa fa-lock"></i>
+                            <i class="fa fa-user"></i>
                         </a>
 
                     </td>
                     <td>
-                        <form action="" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                        </form>
+                        {{$student->credits}}
                     </td>
                 </tr>
             @empty

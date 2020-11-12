@@ -10,7 +10,7 @@
             Lessons list
         </h1>
         @include('layouts.showResponse')
-        <a href="{{route('aulas.create')}}" class="btn btn-primary">Criar Lesson</a>
+        <a href="{{route('aulas.create')}}" class="btn btn-primary">Agendar aula</a>
         <a href="{{route('alunos.create')}}" class="btn btn-primary">Cadastrar aluno</a>
 
         @include('layouts.calendar')

@@ -37,7 +37,8 @@ class LessonController extends Controller
 
         $request->validate([
             'location' => 'string|required|min:5',
-            'date' => 'required|date'
+            'date' => 'required|date',
+            'end_date' => 'date'
         ]);
 
         if ($request->repeat === 'single'){
@@ -45,7 +46,7 @@ class LessonController extends Controller
         }
 
         if ($request->repeat === "weekly"){
-            Fixed_lesson::createFixed_lesson($request->only(['location', 'selected', 'date']));
+            Fixed_lesson::createFixed_lesson($request->only(['location', 'selected', 'date', 'end_date']));
         }
 
         return redirect()->route('aulas.index')->with('success','Aula criada com sucesso');
@@ -60,8 +61,16 @@ class LessonController extends Controller
             abort(403);
         }
 
+        $warnings = [];
+        foreach ($lesson->students as $student){
 
-        return view('site.teacher.lessons.show', compact(['lesson']));
+            if ($student->credits < 2){
+                $warnings[] = $student->name . ": tem " . $student->credits . " créditos";
+            }
+
+        }
+
+        return view('site.teacher.lessons.show', compact(['lesson', 'warnings']));
     }
 
 

@@ -14,14 +14,18 @@
             <a href="{{route('balance.deposit', $student->slug)}}" class="btn btn-success">Adicionar saldo</a>
         </div>
 
-        <table class="table table-hover">
+        <div>
+            <p><b>Data de nascimento:</b> {{$student->formatedBirthday}}</p>
+            <p><b>Saldo:</b> {{$student->credits}}</p>
+        </div>
+
+        <hr>
+        <table class="table table-hover table-bordered">
+
             @include('layouts.showResponse')
 
-            <div>
-                <p>Data de nascimento: {{$student->formatedBirthday}}</p>
-                <p>Saldo: {{$student->credits}}</p>
-            </div>
 
+            <h3>Aulas</h3>
             <tr>
                 <th>Data</th>
                 <th>Local</th>

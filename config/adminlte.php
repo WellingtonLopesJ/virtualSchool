@@ -286,6 +286,11 @@ return [
                     'url'  => '/alunos',
 
                 ],
+                [
+                    'text' => 'Relatórios',
+                    'url'  => '/relatorios',
+
+                ],
 
             ],
         ]

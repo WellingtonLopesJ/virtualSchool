@@ -65,12 +65,12 @@ class User extends Authenticatable
     {
         foreach ($this->fixed_lessons as $fixed_lesson){
 
-            if ($fixed_lesson->scheduledLessons()->count() < 8) {
+            //Pega a data da última aula agendada e adiciona 7 dias pra criar a próxima,
+            // se não tiver nenhuma agendada pega da última e cria por semana até o dia de hoje
+            $latest = $fixed_lesson->scheduledLessons()->orderBy('date', 'DESC')->first()->date ?? $fixed_lesson->lessons()->orderBy('date', 'DESC')->first()->date;
+            $date = date('Y-m-d H:i', strtotime('+7days',  strtotime($latest)));
 
-                //Pega a data da última aula agendada e adiciona 7 dias pra criar a próxima,
-                // se não tiver nenhuma agendada pega da última e cria por semana até o dia de hoje
-                $latest = $fixed_lesson->scheduledLessons()->orderBy('date', 'DESC')->first()->date ?? $fixed_lesson->lessons()->orderBy('date', 'DESC')->first()->date;
-                $date = date('Y-m-d H:i', strtotime('+7days',  strtotime($latest)));
+            if ($fixed_lesson->scheduledLessons()->count() < 8 && strtotime(date('Y-m-d', strtotime($date))) <= strtotime($fixed_lesson->end_date)) {
 
                 $selected = array_of_column($fixed_lesson->students, 'id');
 

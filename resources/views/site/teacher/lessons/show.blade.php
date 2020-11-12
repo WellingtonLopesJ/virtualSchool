@@ -11,8 +11,17 @@
 
         @include('layouts.showResponse')
 
+        @if(count($warnings) > 0)
 
-        <header><h3>Editar aula |
+            @foreach($warnings as $warning)
+
+                <div class="alert alert-warning">
+                    {{$warning}}
+                </div>
+
+            @endforeach
+        @endif
+        <header><h3>
                 @if($lesson->canceled == false)
                     <a href="{{route('aulas.cancel', $lesson->slug)}}" class="btn btn-danger text-white">Cancelar aula</a>
                 @else
@@ -27,7 +36,7 @@
 
         <form action="{{route('aulas.update', $lesson->slug)}}" method="POST">
 
-            @if($lesson->canceled == true || $lesson->date < date('Y-m-d H:i:s'))<fieldset disabled="disabled">@endif
+            @if($lesson->canceled == true || $lesson->date < date('Y-m-d H:i:s'))<fieldset disabled="disabled"> </fieldset>@endif
 
             @method('PUT')
             @csrf
@@ -49,7 +58,7 @@
             </div>
 
 
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="submit" class="btn btn-primary">Atualizar</button>
         </form>
 
     </div>
