@@ -70,7 +70,9 @@ class User extends Authenticatable
             $latest = $fixed_lesson->scheduledLessons()->orderBy('date', 'DESC')->first()->date ?? $fixed_lesson->lessons()->orderBy('date', 'DESC')->first()->date;
             $date = date('Y-m-d H:i', strtotime('+7days',  strtotime($latest)));
 
-            if ($fixed_lesson->scheduledLessons()->count() < 8 && strtotime(date('Y-m-d', strtotime($date))) <= strtotime($fixed_lesson->end_date)) {
+            if (
+                $fixed_lesson->scheduledLessons()->count() < 8 &&
+                strtotime(date('Y-m-d', strtotime($date))) <= strtotime($fixed_lesson->end_date)) {
 
                 $selected = array_of_column($fixed_lesson->students, 'id');
 

@@ -29,5 +29,5 @@ Vue.component('LocationSearchBar', require('./components/LocationSearchBar').def
  */
 
 const app = new Vue({
-    el: '#app',
+    el: '#app'
 });

@@ -65,7 +65,7 @@ class Lesson extends Model
     {
         $slug = bin2hex(random_bytes(5));
 
-        if (Lesson::where('slug', $slug)->exists()){
+        if (Lesson::where('slug', $slug)->exists() || Fixed_lesson::where('slug', $slug)->exists()){
             return Lesson::slug();
         }
 

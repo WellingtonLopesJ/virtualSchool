@@ -31,6 +31,13 @@ class LessonController extends Controller
         return view('site.teacher.lessons.create');
     }
 
+    public function createFromCalendar(Request $request)
+    {
+        $start = date('Y-m-d' ,strtotime($request->start)) . "T" . date('H:i:s' ,strtotime($request->start));
+
+        return view('site.teacher.lessons.create', compact('start'));
+    }
+
 
     public function store(Request $request)
     {

@@ -9,6 +9,7 @@
 
     <div class="container" id="app">
 
+
         @include('layouts.showResponse')
 
         <form action="{{route('aulas.store')}}" method="POST">
@@ -21,9 +22,9 @@
                 <location-search-bar></location-search-bar>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" >
                 <label for="date">Data:</label>
-                <input type="datetime-local" class="form-control" id="date" name="date">
+                <input {{ isset($start) ? "disabled" : "" }} type="datetime-local" class="form-control" id="date" name="date" value="{{$start ?? ''}}">
             </div>
 
             <div class="form-group">
@@ -67,8 +68,8 @@
 @section('js')
     <script> console.log('Hi!'); </script>
     <script>
-        $(document).ready(function(){
 
+        $(document).ready(function(){
             $("#has_end").change(function () {
                 var selected_option = $('#has_end').val();
                 if (selected_option === "on") {

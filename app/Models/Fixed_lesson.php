@@ -36,11 +36,12 @@ class Fixed_lesson extends Model
         auth()->user()->guarantee8weeksSchedule();
     }
 
+
     public static function slug()
     {
         $slug = bin2hex(random_bytes(5));
 
-        if (Fixed_lesson::where('slug', $slug)->exists()){
+        if (Lesson::where('slug', $slug)->exists() || Fixed_lesson::where('slug', $slug)->exists()){
             return Fixed_lesson::slug();
         }
 

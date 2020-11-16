@@ -18,6 +18,11 @@
     export default {
         mounted() {
             console.log('Component mounted.')
+        },
+        methods: {
+            greet: function () {
+            return 'test';
+            }
         }
     }
 </script>

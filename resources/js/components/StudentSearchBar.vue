@@ -29,6 +29,7 @@
             }
         },
         methods: {
+
             fetchResults: function (query) {
                 axios.get('/searchStudents', {params: {query: query, selectedIds: this.selectedIds }})
                     .then( response => {

@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth'], ], function(){
     Route::resource('aulas', 'Site\teacher\LessonController');
     Route::get('aulas/{slug}/cancel', 'Site\teacher\LessonController@cancel')->name('aulas.cancel');
     Route::get('aulas/{slug}/uncancel', 'Site\teacher\LessonController@unCancel')->name('aulas.uncancel');
-
+    Route::post('aulas/create', 'Site\teacher\LessonController@createFromCalendar')->name('aulas.create');
     Route::resource('fixedLessons', 'Site\Teacher\Fixed_lessonController');
 
     Route::resource('alunos', 'Site\Teacher\StudentController');
